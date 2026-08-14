@@ -8,13 +8,20 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Data //TODO: check this warning and improve the code
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionEntity {
@@ -42,5 +49,18 @@ public class TransactionEntity {
                 this.amount,
                 this.category
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransactionEntity that = (TransactionEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
