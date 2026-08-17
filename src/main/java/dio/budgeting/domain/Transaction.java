@@ -3,6 +3,8 @@ package dio.budgeting.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.Instant;
+
 @Getter
 @AllArgsConstructor
 public class Transaction {
@@ -10,11 +12,13 @@ public class Transaction {
     private String description;
     private long amount; // long, pois vamos trabalhar com centavos
     private Category category;
+    private Instant occurredAt;
 
     public Transaction(String description, long amount, Category category) {
         this.id = new  TransactionId();
         this.description = description;
         this.amount = amount;
         this.category = category;
+        this.occurredAt = Instant.now(); // TODO: avaliar a definição do Clock
     }
 }

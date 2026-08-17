@@ -9,11 +9,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,7 +22,6 @@ import java.util.UUID;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 @AllArgsConstructor
 public class TransactionEntity {
     @Id
@@ -33,13 +32,16 @@ public class TransactionEntity {
     @Enumerated(EnumType.STRING) // sem a anotação, o BD definiu a coluna como tinyint
     private Category category;
 
+    private Instant createdAt;
 
     // Mapper
     public static TransactionEntity from(Transaction transaction) {
         return new TransactionEntity(transaction.getId().uuid(),
                 transaction.getDescription(),
                 transaction.getAmount(),
-                transaction.getCategory());
+                transaction.getCategory(),
+                //TODO verificar como delegar para o db a atribuição de data da persistência
+                transaction.getOccurredAt());
     }
 
     public Transaction toDomain() {
@@ -47,7 +49,8 @@ public class TransactionEntity {
                 new TransactionId(this.id),
                 this.description,
                 this.amount,
-                this.category
+                this.category,
+                this.createdAt
         );
     }
 
