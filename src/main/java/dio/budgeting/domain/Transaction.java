@@ -19,6 +19,5 @@ public class Transaction {
         this.description = description;
         this.amount = amount;
         this.category = category;
-        this.occurredAt = Instant.now(); // TODO: avaliar a definição do Clock
     }
 }

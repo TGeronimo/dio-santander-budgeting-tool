@@ -3,6 +3,7 @@ package dio.budgeting.infrasctructure.persistence.entity;
 import dio.budgeting.domain.Category;
 import dio.budgeting.domain.Transaction;
 import dio.budgeting.domain.TransactionId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,6 +33,12 @@ public class TransactionEntity {
     @Enumerated(EnumType.STRING) // sem a anotação, o BD definiu a coluna como tinyint
     private Category category;
 
+    @Column(
+            name = "created_at",
+            columnDefinition = "DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6)",
+            insertable = false,
+            updatable = false
+    )
     private Instant createdAt;
 
     // Mapper
@@ -40,8 +47,8 @@ public class TransactionEntity {
                 transaction.getDescription(),
                 transaction.getAmount(),
                 transaction.getCategory(),
-                //TODO verificar como delegar para o db a atribuição de data da persistência
-                transaction.getOccurredAt());
+                transaction.getOccurredAt()
+                );
     }
 
     public Transaction toDomain() {
