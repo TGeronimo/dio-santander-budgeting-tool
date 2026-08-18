@@ -1,6 +1,5 @@
 package dio.budgeting;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -24,8 +23,9 @@ public class OpenAiTranscriptionModelIT {
             "Gravando-2.mp3, 70 reais",
             "Gravando-3.mp3, 4 reais",
             "Gravando-4.mp3, 50 reais",
+            "Gravando-5.mp3, 12,25 reais"
     })
-    void should_contaiExcpectedKeywords_when_audioFilesAreProcessed(String fileName, String expectedKeyword) {
+    void should_contaiExpectedKeywords_when_audioFilesAreProcessed(String fileName, String expectedKeyword) {
         var recording = new ClassPathResource("audio/" + fileName);
 
         var response = openAiTranscriptionModel.call(recording);
