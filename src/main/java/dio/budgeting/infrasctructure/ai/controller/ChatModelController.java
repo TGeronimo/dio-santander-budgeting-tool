@@ -1,4 +1,4 @@
-package dio.budgeting;
+package dio.budgeting.infrasctructure.ai.controller;
 
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.web.bind.annotation.GetMapping;

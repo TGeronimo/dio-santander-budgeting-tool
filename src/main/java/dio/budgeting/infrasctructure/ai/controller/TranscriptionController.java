@@ -1,4 +1,4 @@
-package dio.budgeting;
+package dio.budgeting.infrasctructure.ai.controller;
 
 import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.http.MediaType;

@@ -1,7 +1,6 @@
-package dio.budgeting;
+package dio.budgeting.infrasctructure.ai.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,6 @@ public class ChatClientController {
 //    O SpringBoot não sabe instanciar o ChatClient, então foi necessário criar um bean em BudgetingApplication.java
     public ChatClientController(ChatClient chatClient) {
         this.chatClient = chatClient;
-        chatClient = null;
     }
 
     @GetMapping("/chat")

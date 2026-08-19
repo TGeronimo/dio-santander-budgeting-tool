@@ -11,7 +11,7 @@ public record TransactionRequest(
     public PersistTransactionInput toInput() {
         return new PersistTransactionInput(
                 description(),
-                category,
-                amount);
+                category(),
+                amount());
     }
 }

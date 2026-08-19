@@ -5,7 +5,8 @@ import org.springframework.ai.tool.annotation.ToolParam;
 
 import java.time.Instant;
 
-public record PersistTransactionInput(@ToolParam(description = "Descrição da despesa.") String description,
-                                      @ToolParam(description = "Categoria da despesa") Category category,
-                                      @ToolParam(description = "Valor da despesa") long amount) {
+public record PersistTransactionInput(
+        @ToolParam(description = "Descrição da despesa.") String description,
+        @ToolParam(description = "Categoria da despesa") Category category,
+        @ToolParam(description = "Valor da despesa, em centavos. E.: 4 reais = 400; 50 reais = 5000.") long amount) {
 }
