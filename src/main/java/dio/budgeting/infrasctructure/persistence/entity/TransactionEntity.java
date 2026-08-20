@@ -1,8 +1,8 @@
 package dio.budgeting.infrasctructure.persistence.entity;
 
-import dio.budgeting.domain.Category;
-import dio.budgeting.domain.Transaction;
-import dio.budgeting.domain.TransactionId;
+import dio.budgeting.domain.transaction.Category;
+import dio.budgeting.domain.transaction.Transaction;
+import dio.budgeting.domain.transaction.TransactionId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

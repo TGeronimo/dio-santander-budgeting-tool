@@ -1,4 +1,4 @@
-package dio.budgeting.infrasctructure.ai.controller;
+package dio.budgeting.infrasctructure.ai;
 
 import org.springframework.ai.audio.tts.TextToSpeechModel;
 import org.springframework.core.io.ByteArrayResource;

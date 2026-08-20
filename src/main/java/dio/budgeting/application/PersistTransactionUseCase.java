@@ -2,8 +2,8 @@ package dio.budgeting.application;
 
 import dio.budgeting.application.input.PersistTransactionInput;
 import dio.budgeting.application.output.TransactionOutput;
-import dio.budgeting.domain.Transaction;
-import dio.budgeting.domain.TransactionRepository;
+import dio.budgeting.domain.transaction.Transaction;
+import dio.budgeting.domain.transaction.TransactionRepository;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 

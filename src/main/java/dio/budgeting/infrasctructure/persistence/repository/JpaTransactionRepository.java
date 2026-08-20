@@ -1,8 +1,8 @@
 package dio.budgeting.infrasctructure.persistence.repository;
 
-import dio.budgeting.domain.Category;
-import dio.budgeting.domain.Transaction;
-import dio.budgeting.domain.TransactionRepository;
+import dio.budgeting.domain.transaction.Category;
+import dio.budgeting.domain.transaction.Transaction;
+import dio.budgeting.domain.transaction.TransactionRepository;
 import dio.budgeting.infrasctructure.persistence.entity.TransactionEntity;
 import org.springframework.stereotype.Repository;
 

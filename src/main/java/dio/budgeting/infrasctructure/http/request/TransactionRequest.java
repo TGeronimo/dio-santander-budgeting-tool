@@ -1,7 +1,7 @@
 package dio.budgeting.infrasctructure.http.request;
 
 import dio.budgeting.application.input.PersistTransactionInput;
-import dio.budgeting.domain.Category;
+import dio.budgeting.domain.transaction.Category;
 
 public record TransactionRequest(
         String description,

@@ -1,4 +1,4 @@
-package dio.budgeting.domain;
+package dio.budgeting.domain.transaction;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

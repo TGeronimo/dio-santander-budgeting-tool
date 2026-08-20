@@ -1,6 +1,6 @@
 package dio.budgeting.infrasctructure.persistence.repository;
 
-import dio.budgeting.domain.Category;
+import dio.budgeting.domain.transaction.Category;
 import dio.budgeting.infrasctructure.persistence.entity.TransactionEntity;
 import org.springframework.data.repository.CrudRepository;
 

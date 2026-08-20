@@ -2,7 +2,7 @@ package dio.budgeting.infrasctructure.http;
 
 import dio.budgeting.application.ListTransactionsByCategoryUseCase;
 import dio.budgeting.application.PersistTransactionUseCase;
-import dio.budgeting.domain.Category;
+import dio.budgeting.domain.transaction.Category;
 import dio.budgeting.infrasctructure.http.request.TransactionRequest;
 import dio.budgeting.infrasctructure.http.response.TransactionResponse;
 import org.springframework.ai.audio.transcription.TranscriptionModel;
