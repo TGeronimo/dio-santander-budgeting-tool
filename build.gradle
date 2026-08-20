@@ -24,6 +24,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     implementation platform("org.springframework.ai:spring-ai-bom:2.0.0")
@@ -35,7 +36,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
 
 
-    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+    testAndDevelopmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 tasks.named('test') {

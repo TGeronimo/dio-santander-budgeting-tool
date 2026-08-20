@@ -1,6 +1,7 @@
 package dio.budgeting.infrasctructure.http;
 
 import dio.budgeting.infrasctructure.http.request.LoginRequest;
+import dio.budgeting.infrasctructure.http.request.RefreshRequest;
 import dio.budgeting.infrasctructure.http.response.AuthResponse;
 import dio.budgeting.infrasctructure.security.jwt.JwtService;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(
@@ -34,9 +35,21 @@ public class AuthController {
                 );
         Authentication auth = authenticationManager.authenticate(authToken);
 
-        String jwt = jwtService.generateToken(authToken.getName());
+        String accessToken = jwtService.generateAccessToken(auth.getName());
+        String refreshToken = jwtService.generateRefreshToken(auth.getName());
 
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
+
+        String email = jwtService.extractSubject(refreshRequest.refreshToken());
+
+        String accessToken = jwtService.generateAccessToken(email);
+        String refreshToken = jwtService.generateRefreshToken(email);
+
+        return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken));
     }
 
 }
