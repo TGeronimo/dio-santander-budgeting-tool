@@ -7,15 +7,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthProvider implements AuthenticationProvider {
 
     private final AuthUserDetailsService authUserDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthProvider(AuthUserDetailsService authUserDetailsService) {
+    public AuthProvider(AuthUserDetailsService authUserDetailsService, PasswordEncoder passwordEncoder) {
         this.authUserDetailsService = authUserDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class AuthProvider implements AuthenticationProvider {
 
         UserDetails user = authUserDetailsService.loadUserByUsername(email);
 
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Senha inválida!");
         }
 

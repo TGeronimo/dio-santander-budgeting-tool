@@ -23,12 +23,12 @@ public class AuthUserDetails implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return "";
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return user.getEmail();
     }
 
     @Override

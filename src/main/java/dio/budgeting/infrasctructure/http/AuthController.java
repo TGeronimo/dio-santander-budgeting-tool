@@ -2,7 +2,6 @@ package dio.budgeting.infrasctructure.http;
 
 import dio.budgeting.application.RegisterUserUseCase;
 import dio.budgeting.application.output.UserOutput;
-import dio.budgeting.domain.user.User;
 import dio.budgeting.infrasctructure.http.request.LoginRequest;
 import dio.budgeting.infrasctructure.http.request.RefreshRequest;
 import dio.budgeting.infrasctructure.http.request.UserRegisterRequest;
@@ -12,6 +11,7 @@ import dio.budgeting.infrasctructure.security.jwt.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +30,7 @@ public class AuthController {
     public AuthController(JwtService jwtService, RegisterUserUseCase registerUserUseCase) {
         this.jwtService = jwtService;
         this.registerUserUseCase = registerUserUseCase;
+        this.authenticationManager = new ProviderManager();
     }
 
     @PostMapping("/register")
