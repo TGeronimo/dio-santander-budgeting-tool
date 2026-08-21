@@ -18,14 +18,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtService jwtService, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   JwtService jwtService,
+                                                   JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable()) // APIs não usam CSRF
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // sem sessão
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/hello", "/auth/login").permitAll() // libera o /hello
+                        .requestMatchers("/auth/**", "/transactions/**").permitAll() // libera o /hello
                         .anyRequest().authenticated() // protege o resto
                 )
                 .exceptionHandling(ex -> ex

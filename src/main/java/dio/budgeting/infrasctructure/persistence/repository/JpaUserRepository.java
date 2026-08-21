@@ -2,15 +2,15 @@ package dio.budgeting.infrasctructure.persistence.repository;
 
 import dio.budgeting.domain.user.User;
 import dio.budgeting.domain.user.UserRepository;
+import dio.budgeting.infrasctructure.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class JpaUserRepository implements UserRepository {
 
-    private UserEntityRepository userEntityRepository;
+    private final UserEntityRepository userEntityRepository;
 
     public JpaUserRepository(UserEntityRepository userEntityRepository) {
         this.userEntityRepository = userEntityRepository;
@@ -18,22 +18,17 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return userEntityRepository.existsByEmail(email);
     }
 
     @Override
     public User save(User user) {
-        return null;
-    }
+        return userEntityRepository.save(UserEntity.from(user)).toDomain();
 
-    @Override
-    public List<User> findAll() {
-        return List.of();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-
-        return Optional.empty();
+        return userEntityRepository.findByEmail(email).map(UserEntity::toDomain);
     }
 }
