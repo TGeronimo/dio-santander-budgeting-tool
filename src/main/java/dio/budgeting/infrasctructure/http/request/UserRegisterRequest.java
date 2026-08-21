@@ -2,7 +2,7 @@ package dio.budgeting.infrasctructure.http.request;
 
 import dio.budgeting.application.input.PersistUserInput;
 
-public record RegisterRequest(
+public record UserRegisterRequest(
         String email,
         String password
 ) {

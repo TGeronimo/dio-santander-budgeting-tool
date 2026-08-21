@@ -1,13 +1,12 @@
 package dio.budgeting.infrasctructure.http;
 
 import dio.budgeting.application.RegisterUserUseCase;
-import dio.budgeting.domain.user.User;
 import dio.budgeting.infrasctructure.http.request.LoginRequest;
 import dio.budgeting.infrasctructure.http.request.RefreshRequest;
-import dio.budgeting.infrasctructure.http.request.RegisterRequest;
+import dio.budgeting.infrasctructure.http.request.UserRegisterRequest;
 import dio.budgeting.infrasctructure.http.response.AuthResponse;
+import dio.budgeting.infrasctructure.http.response.UserResponse;
 import dio.budgeting.infrasctructure.security.jwt.JwtService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,24 +15,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final JwtService jwtService;
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final RegisterUserUseCase registerUserUseCase;
 
-    public AuthController(JwtService jwtService, RegisterUserUseCase registerUserUseCase) {
+    public AuthController(JwtService jwtService, AuthenticationManager authenticationManager, RegisterUserUseCase registerUserUseCase) {
         this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
         this.registerUserUseCase = registerUserUseCase;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        User user = registerUserUseCase.register(request.toInput());
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRegisterRequest userRequest) {
+        var user = registerUserUseCase.register(userRequest.toInput());
+
+        return ResponseEntity.ok(UserResponse.from(user));
     }
 
 
@@ -65,3 +67,4 @@ public class AuthController {
     }
 
 }
+
