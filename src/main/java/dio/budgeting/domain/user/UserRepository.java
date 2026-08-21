@@ -1,6 +1,11 @@
 package dio.budgeting.domain.user;
 
-public interface UserRepository {
+import java.util.List;
+import java.util.Optional;
 
-    //TODO
+public interface UserRepository {
+    boolean existsByEmail(String email);
+    User save(User user);
+    Optional<User> findByEmail(String email);
+    List<User> findAll();
 }

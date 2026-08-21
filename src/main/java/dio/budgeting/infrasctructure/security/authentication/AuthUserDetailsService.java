@@ -1,7 +1,7 @@
 package dio.budgeting.infrasctructure.security.authentication;
 
-import dio.budgeting.application.FakeUserAuthUseCase;
 import dio.budgeting.domain.user.User;
+import dio.budgeting.domain.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,19 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthUserDetailsService implements UserDetailsService {
 
-    private final FakeUserAuthUseCase fakeUserAuthUseCase;
+    private final UserRepository userRepository;
 
-    public AuthUserDetailsService(FakeUserAuthUseCase fakeUserAuthUseCase) {
-        this.fakeUserAuthUseCase = fakeUserAuthUseCase;
+    public AuthUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = fakeUserAuthUseCase.execute(email);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("Usuário" + email + " não  encontrado!");
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Email" + email + " não  encontrado!"));
 
         return new AuthUserDetails(user);
     }

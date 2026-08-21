@@ -1,9 +1,13 @@
 package dio.budgeting.infrasctructure.http;
 
+import dio.budgeting.application.RegisterUserUseCase;
+import dio.budgeting.domain.user.User;
 import dio.budgeting.infrasctructure.http.request.LoginRequest;
 import dio.budgeting.infrasctructure.http.request.RefreshRequest;
+import dio.budgeting.infrasctructure.http.request.RegisterRequest;
 import dio.budgeting.infrasctructure.http.response.AuthResponse;
 import dio.budgeting.infrasctructure.security.jwt.JwtService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,9 +23,17 @@ public class AuthController {
 
     private final JwtService jwtService;
     AuthenticationManager authenticationManager;
+    private final RegisterUserUseCase registerUserUseCase;
 
-    public AuthController(JwtService jwtService) {
+    public AuthController(JwtService jwtService, RegisterUserUseCase registerUserUseCase) {
         this.jwtService = jwtService;
+        this.registerUserUseCase = registerUserUseCase;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        User user = registerUserUseCase.register(request.toInput());
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
 

@@ -8,14 +8,14 @@ import java.time.Instant;
 @Getter
 @AllArgsConstructor
 public class Transaction {
-    private TransactionId id;
+    private IdGenerator id;
     private String description;
     private long amount; // long, pois vamos trabalhar com centavos
     private Category category;
     private Instant occurredAt;
 
     public Transaction(String description, long amount, Category category) {
-        this.id = new  TransactionId();
+        this.id = new IdGenerator();
         this.description = description;
         this.amount = amount;
         this.category = category;

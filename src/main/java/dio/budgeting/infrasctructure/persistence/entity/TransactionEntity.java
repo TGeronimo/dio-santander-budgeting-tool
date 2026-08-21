@@ -2,7 +2,7 @@ package dio.budgeting.infrasctructure.persistence.entity;
 
 import dio.budgeting.domain.transaction.Category;
 import dio.budgeting.domain.transaction.Transaction;
-import dio.budgeting.domain.transaction.TransactionId;
+import dio.budgeting.domain.transaction.IdGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -53,7 +53,7 @@ public class TransactionEntity {
 
     public Transaction toDomain() {
         return new Transaction(
-                new TransactionId(this.id),
+                new IdGenerator(this.id),
                 this.description,
                 this.amount,
                 this.category,

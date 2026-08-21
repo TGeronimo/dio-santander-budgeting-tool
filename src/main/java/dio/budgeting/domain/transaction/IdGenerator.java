@@ -2,8 +2,8 @@ package dio.budgeting.domain.transaction;
 
 import java.util.UUID;
 
-public record TransactionId(UUID uuid) {
-    public TransactionId() {
+public record IdGenerator(UUID uuid) {
+    public IdGenerator() {
         this(UUID.randomUUID());
     }
 
