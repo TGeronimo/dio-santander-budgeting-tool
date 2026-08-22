@@ -1,11 +1,11 @@
 package dio.budgeting.infrasctructure.security.authentication;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -22,8 +22,9 @@ public class AuthProvider implements AuthenticationProvider {
     }
 
     @Override
-    public @Nullable Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public @Nullable Authentication authenticate(Authentication authentication) throws AuthenticationCredentialsNotFoundException {
         String email = authentication.getName();
+
         String password = authentication.getCredentials().toString();
 
         UserDetails user = authUserDetailsService.loadUserByUsername(email);

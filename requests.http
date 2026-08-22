@@ -1,0 +1,97 @@
+### Host configuration
+@host = http://localhost:8080
+@contentType = application/json
+
+### ===== AUTHENTICATION WORKFLOW =====
+
+### 1. Register a new user
+# Change email to a unique value each time to avoid "Email já cadastrado!" error
+POST {{host}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "alice.demo@example.com",
+  "password": "MySecurePassword123!"
+}
+
+> {%
+  client.global.set("registeredEmail", "alice.demo@example.com");
+  client.global.set("registeredPassword", "MySecurePassword123!");
+%}
+
+### 2. Login with registered user
+# This request captures the access token and refresh token
+POST {{host}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "{{registeredEmail}}",
+  "password": "{{registeredPassword}}"
+}
+
+> {%
+  if (response.status === 200) {
+    const tokens = response.body;
+    client.global.set("accessToken", tokens.accessToken);
+    client.global.set("refreshToken", tokens.refreshToken);
+    client.log("✓ Login successful!");
+    client.log("Access Token: " + tokens.accessToken.substring(0, 20) + "...");
+    client.log("Refresh Token: " + tokens.refreshToken.substring(0, 20) + "...");
+  } else {
+    client.log("✗ Login failed with status: " + response.status);
+  }
+%}
+
+### 3. Refresh tokens (get new access token)
+# Use the refresh token obtained from login
+POST {{host}}/auth/refresh
+Content-Type: {{contentType}}
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+> {%
+  if (response.status === 200) {
+    const tokens = response.body;
+    client.global.set("accessToken", tokens.accessToken);
+    client.global.set("refreshToken", tokens.refreshToken);
+    client.log("✓ Token refresh successful!");
+    client.log("New Access Token: " + tokens.accessToken.substring(0, 20) + "...");
+  } else {
+    client.log("✗ Token refresh failed with status: " + response.status);
+  }
+%}
+
+### ===== PROTECTED ENDPOINTS (require valid access token) =====
+
+### Example: Get transactions (requires Bearer token)
+GET {{host}}/transactions/GROCERIES
+Authorization: Bearer {{accessToken}}
+
+### Example: Create transaction (requires Bearer token)
+POST {{host}}/transactions
+Authorization: Bearer {{accessToken}}
+Content-Type: {{contentType}}
+
+{
+  "description": "Grocery shopping",
+  "category": "GROCERIES",
+  "amount": 150.50
+}
+
+### ===== QUICK TEST FLOW =====
+# Instructions:
+# 1. Click "Send Request" on request #1 (Register) - update email if needed
+# 2. Click "Send Request" on request #2 (Login) - tokens auto-saved to variables
+# 3. Click "Send Request" on request #3 (Refresh) - optional, tests refresh endpoint
+# 4. Use {{accessToken}} in any subsequent protected endpoint request
+
+### Notes:
+# - Variables are stored in {{}} syntax and persist during the session
+# - Tokens are auto-captured from JSON responses using > script blocks
+# - Each register needs a unique email; increment the demo email or change the name
+# - If login returns 401, check:
+#   1. Email/password are correct (case-sensitive)
+#   2. User was successfully registered (check register response)
+#   3. Database is running (compose.yml)
