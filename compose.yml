@@ -1,21 +1,38 @@
 services:
-  database:
+  db:
     image: mysql:9.6
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: transaction
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: app
-      MYSQL_PASSWORD: app
-
-    ports:
-      - "3307:3306"
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Configure MYSQL_PASSWORD no .env do servidor}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Configure MYSQL_ROOT_PASSWORD no .env do servidor}
     volumes:
       - transaction_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD","mysqladmin", "ping", "-h", "localhost", "-uapp", "-papp"]
-      interval: 5s
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
+
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/transaction
+      SPRING_DATASOURCE_USERNAME: app
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:?Configure MYSQL_PASSWORD no .env do servidor}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?Configure OPENAI_API_KEY no .env do servidor}
+      JWT_SECRET: ${JWT_SECRET:?Configure JWT_SECRET no .env do servidor}
+      SPRING_JPA_SHOW_SQL: "false"
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_AI: INFO
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m -XX:MaxMetaspaceSize=192m"
 
 volumes:
   transaction_data:
