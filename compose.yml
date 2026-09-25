@@ -1,16 +1,16 @@
 services:
   db:
-    image: mysql:9.6
+    image: mariadb:11.4
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: transaction
-      MYSQL_USER: app
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Configure MYSQL_PASSWORD no .env do servidor}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Configure MYSQL_ROOT_PASSWORD no .env do servidor}
+      MARIADB_DATABASE: transaction
+      MARIADB_USER: app
+      MARIADB_PASSWORD: ${MYSQL_PASSWORD:?Configure MYSQL_PASSWORD no .env do servidor}
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Configure MYSQL_ROOT_PASSWORD no .env do servidor}
     volumes:
-      - transaction_data:/var/lib/mysql
+      - transaction_data_mariadb:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -35,4 +35,4 @@ services:
       JAVA_TOOL_OPTIONS: "-Xms128m -Xmx512m -XX:MaxMetaspaceSize=192m"
 
 volumes:
-  transaction_data:
+  transaction_data_mariadb:
