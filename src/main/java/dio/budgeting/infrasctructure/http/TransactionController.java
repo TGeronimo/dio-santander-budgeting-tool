@@ -74,6 +74,7 @@ public class TransactionController {
 
     @PostMapping(value = "/ai", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = "audio/mp3")
     public ResponseEntity<Resource> transcribe(@RequestParam("file") MultipartFile file) {
+        System.out.println("CHEGOU O ÁUDIO");
         var userMessage = transcriptionModel.transcribe(file.getResource());
 
         var result = chatClient.prompt().user(userMessage).call().content();
