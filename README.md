@@ -35,6 +35,12 @@ Executando localmente (Windows)
 
 A aplicação roda por padrão em http://localhost:8080
 
+### Acesso pelo frontend no navegador (CORS)
+
+O CORS é habilitado na configuração do Spring Security. As origens permitidas são configuradas pela variável `CORS_ALLOWED_ORIGINS`, separadas por vírgula. Por padrão, são aceitas `http://localhost:3000` e `http://localhost:5173` (portas comuns de desenvolvimento). No servidor doméstico, defina essa variável no `.env` do Compose com a origem exata que aparece no navegador, por exemplo `CORS_ALLOWED_ORIGINS=http://localhost:5173`, e recrie o serviço da API.
+
+Com o túnel SSH encaminhando a porta local 8080 para a porta 8080 do servidor, o frontend pode chamar `http://localhost:8080`. A origem CORS é a origem do frontend no navegador (protocolo, host e porta), não o endereço do backend. Requisições com JWT usam o cabeçalho `Authorization`; o CORS libera esse cabeçalho e as requisições preflight `OPTIONS`, mantendo autenticação nos demais endpoints.
+
 Endpoints principais
 
 1) Autenticação (abertos)
